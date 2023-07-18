@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -81,6 +83,7 @@ public class WebViewDialog extends Dialog {
 
     setupToolbar();
     setWebViewClient();
+    _webView.setWebChromeClient(new customChromeClient());
 
     if (!this._options.isPresentAfterPageLoad()) {
       show();
@@ -246,6 +249,12 @@ public class WebViewDialog extends Dialog {
         }
       }
     );
+  }
+
+  private class customChromeClient extends WebChromeClient {
+    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+      callback.invoke(origin, true, false);
+    }
   }
 
   @Override
