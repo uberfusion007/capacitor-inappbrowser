@@ -2,8 +2,12 @@ package ee.forgr.capacitor_inappbrowser;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -184,6 +188,29 @@ public class WebViewDialog extends Dialog {
           WebView view,
           WebResourceRequest request
         ) {
+          var url = request.getUrl().toString();
+          if (url.startsWith("intent://")) {
+            try {
+              Context context = view.getContext();
+              Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+
+              if (intent != null) {
+                view.stopLoading();
+
+                PackageManager packageManager = context.getPackageManager();
+                ResolveInfo info = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if (info != null) {
+                  context.startActivity(intent);
+                } else {
+                  String fallbackUrl = intent.getStringExtra("browser_fallback_url");
+                  view.loadUrl(fallbackUrl);
+                }
+                return true;
+              }
+            } catch (URISyntaxException e) {
+              Log.e(getContext().getClass().getName(), "Can't resolve intent://", e);
+            }
+          }
           return false;
         }
 
