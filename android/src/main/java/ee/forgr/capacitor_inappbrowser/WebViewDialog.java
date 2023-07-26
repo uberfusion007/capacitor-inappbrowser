@@ -1,11 +1,13 @@
 package ee.forgr.capacitor_inappbrowser;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -209,6 +211,33 @@ public class WebViewDialog extends Dialog {
               }
             } catch (URISyntaxException e) {
               Log.e(getContext().getClass().getName(), "Can't resolve intent://", e);
+            }
+          } else if (url.startsWith("https://waze.com")) {
+            Context context = view.getContext();
+            try {
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+              intent.addCategory(Intent.CATEGORY_BROWSABLE);
+              context.startActivity(intent);
+              return true;
+            } catch (ActivityNotFoundException ex) {
+              // If Waze is not installed, open it in Google Play:
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+              context.startActivity(intent);
+              return true;
+            }
+          } else if (url.startsWith("https://maps.google.com")) {
+            Context context = view.getContext();
+            try {
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+              intent.addCategory(Intent.CATEGORY_BROWSABLE);
+              intent.setPackage("com.google.android.apps.maps");
+              context.startActivity(intent);
+              return true;
+            } catch (ActivityNotFoundException ex) {
+              // If Google Maps is not installed, open it in Google Play:
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+              context.startActivity(intent);
+              return true;
             }
           }
           return false;
