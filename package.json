@@ -1,6 +1,6 @@
 {
-  "name": "@uberfusion007/inappbrowser",
-  "version": "1.0.8",
+  "name": "@capgo/inappbrowser",
+  "version": "1.0.7",
   "description": "Capacitor plugin in app browser",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -11,13 +11,13 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "Uberfusion007Inappbrowser.podspec"
+    "CapgoInappbrowser.podspec"
   ],
   "author": "Martin Donadieu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uberfusion007/capacitor-inappbrowser.git"
+    "url": "git+https://github.com/Cap-go/capacitor-inappbrowser.git"
   },
   "bugs": {
     "url": "https://github.com/Cap-go/capacitor-inappbrowser/issues"
@@ -28,9 +28,6 @@
     "browser",
     "native"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
