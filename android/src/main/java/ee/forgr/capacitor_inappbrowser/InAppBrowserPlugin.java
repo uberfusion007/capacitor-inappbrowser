@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.WebStorage;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
@@ -28,6 +29,7 @@ public class InAppBrowserPlugin extends Plugin {
   private CustomTabsClient customTabsClient;
   private CustomTabsSession currentSession;
   private WebViewDialog webViewDialog = null;
+  private String currentUrl = "";
 
   CustomTabsServiceConnection connection = new CustomTabsServiceConnection() {
     @Override
@@ -49,6 +51,7 @@ public class InAppBrowserPlugin extends Plugin {
     if (url == null || TextUtils.isEmpty(url)) {
       call.reject("Invalid URL");
     }
+    currentUrl = url;
     this.getActivity()
       .runOnUiThread(
         new Runnable() {
@@ -71,6 +74,7 @@ public class InAppBrowserPlugin extends Plugin {
     if (url == null || TextUtils.isEmpty(url)) {
       call.reject("Invalid URL");
     }
+    currentUrl = url;
     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder(
       getCustomTabsSession()
     );
@@ -112,8 +116,28 @@ public class InAppBrowserPlugin extends Plugin {
 
   @PluginMethod
   public void clearCookies(PluginCall call) {
-    WebStorage.getInstance().deleteAllData();
-    call.resolve();
+    if (webViewDialog == null) {
+      call.reject("WebView is not open");
+    } else {
+      String url = currentUrl;
+      if (url == null || TextUtils.isEmpty(url)) {
+        call.reject("Invalid URL");
+      } else {
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookie = cookieManager.getCookie(url);
+        if (cookie != null) {
+          String[] cookies = cookie.split(";");
+          for (String c : cookies) {
+            String cookieName = c.substring(0, c.indexOf("="));
+            cookieManager.setCookie(
+              url,
+              cookieName + "=; Expires=Thu, 01 Jan 1970 00:00:01 GMT"
+            );
+          }
+        }
+        call.resolve();
+      }
+    }
   }
 
   @PluginMethod
@@ -122,6 +146,7 @@ public class InAppBrowserPlugin extends Plugin {
     if (url == null || TextUtils.isEmpty(url)) {
       call.reject("Invalid URL");
     }
+    currentUrl = url;
     final Options options = new Options();
     options.setUrl(url);
     options.setHeaders(call.getObject("headers"));
