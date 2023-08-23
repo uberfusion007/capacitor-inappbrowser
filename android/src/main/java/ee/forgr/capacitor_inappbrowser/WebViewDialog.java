@@ -212,6 +212,11 @@ public class WebViewDialog extends Dialog {
             } catch (URISyntaxException e) {
               Log.e(getContext().getClass().getName(), "Can't resolve intent://", e);
             }
+          } else if (url.startsWith("tel:")) {
+            Context context = view.getContext();
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+            context.startActivity(intent);
+            return true;
           } else if (url.startsWith("https://waze.com")) {
             Context context = view.getContext();
             try {
