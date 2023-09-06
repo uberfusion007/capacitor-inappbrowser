@@ -94,6 +94,7 @@ public class WebViewDialog extends Dialog {
 
     setupToolbar();
     setWebViewClient();
+    _webView.setWebChromeClient(new customChromeClient());
 
     if (!this._options.isPresentAfterPageLoad()) {
       show();
