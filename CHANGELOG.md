@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.7](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.6...1.2.7) (2023-09-05)
+
+
+### Bug Fixes
+
+* lint ([ea20a84](https://github.com/Cap-go/capacitor-inappbrowser/commit/ea20a84695c78205d1c85e6617c309130dc13789))
+
+### [1.2.6](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.5...1.2.6) (2023-09-05)
+
+
+### Bug Fixes
+
+* ios build ([0d83511](https://github.com/Cap-go/capacitor-inappbrowser/commit/0d83511f488190668fa0ab6ee3efb5e11bb16235))
+
+### [1.2.5](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.4...1.2.5) (2023-09-05)
+
+
+### Bug Fixes
+
+* CI/CD ([682c1bb](https://github.com/Cap-go/capacitor-inappbrowser/commit/682c1bbfcfe110a7d7ba30dcbc1541cce5dfebe6))
+* lock file ([22d9fdd](https://github.com/Cap-go/capacitor-inappbrowser/commit/22d9fdd7428d55a1e11666487b00a7a69de39e6e))
+* nodejs version ([f104acc](https://github.com/Cap-go/capacitor-inappbrowser/commit/f104accffa6cb1817305bc0da6e77750373cccea))
+* npm version ([34ebed7](https://github.com/Cap-go/capacitor-inappbrowser/commit/34ebed7ae6b0e39ebbd09c7e0cfd6aa5c9d3ba0a))
+* spacing issue ([81a05bd](https://github.com/Cap-go/capacitor-inappbrowser/commit/81a05bd7673ea69527794af911bada4fe9165a54))
+
+### [1.2.4](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.3...1.2.4) (2023-09-02)
+
+### [1.2.3](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.2...1.2.3) (2023-09-02)
+
+
+### Bug Fixes
+
+* lint issue ([1aee379](https://github.com/Cap-go/capacitor-inappbrowser/commit/1aee37954e9b08187be047c2dc63e47b2e8d21ae))
+
+### [1.2.2](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.1...1.2.2) (2023-09-02)
+
+### [1.2.1](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.1.0...1.2.1) (2023-09-01)
+
+## [1.1.0](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.0.14...1.1.0) (2023-09-01)
+
+
+### Features
+
+* add close modal option ([33685e3](https://github.com/Cap-go/capacitor-inappbrowser/commit/33685e3aa522578e6d7bab5988d9d62306d09b48))
+
+### [1.0.14](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.0.13...1.0.14) (2023-09-01)
+
+### [1.0.13](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.0.12...1.0.13) (2023-08-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.android.tools.build:gradle to v8.1.1 ([78298e6](https://github.com/Cap-go/capacitor-inappbrowser/commit/78298e64db035b607b175a9c7099889884a3b142))
+
 ### [1.0.12](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.0.11...1.0.12) (2023-08-21)
 
 ### [1.0.11](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.0.10...1.0.11) (2023-08-14)

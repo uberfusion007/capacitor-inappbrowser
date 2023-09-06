@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -150,13 +151,32 @@ public class InAppBrowserPlugin extends Plugin {
     final Options options = new Options();
     options.setUrl(url);
     options.setHeaders(call.getObject("headers"));
-    options.setTitle(call.getString("title", "New Window"));
+    options.setShowReloadButton(call.getBoolean("showReloadButton", false));
+    if (Boolean.TRUE.equals(call.getBoolean("visibleTitle", true))) {
+      options.setTitle(call.getString("title", "New Window"));
+    } else {
+      options.setTitle(call.getString("title", ""));
+    }
+    options.setToolbarColor(call.getString("toolbarColor", "#ffffff"));
+    options.setArrow(Boolean.TRUE.equals(call.getBoolean("showArrow", false)));
+
     options.setShareDisclaimer(call.getObject("shareDisclaimer", null));
     options.setShareSubject(call.getString("shareSubject", null));
     options.setToolbarType(call.getString("toolbarType", ""));
     options.setPresentAfterPageLoad(
       call.getBoolean("isPresentAfterPageLoad", false)
     );
+    if (call.getBoolean("closeModal", false)) {
+      options.setCloseModal(true);
+      options.setCloseModalTitle(call.getString("closeModalTitle", "Close"));
+      options.setCloseModalDescription(
+        call.getString("closeModalDescription", "Are you sure ?")
+      );
+      options.setCloseModalOk(call.getString("closeModalOk", "Ok"));
+      options.setCloseModalCancel(call.getString("closeModalCancel", "Cancel"));
+    } else {
+      options.setCloseModal(false);
+    }
     options.setPluginCall(call);
     options.setCallbacks(
       new WebViewCallbacks() {

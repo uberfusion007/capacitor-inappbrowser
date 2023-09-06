@@ -6,6 +6,11 @@ import com.getcapacitor.PluginCall;
 public class Options {
 
   private String title;
+  private boolean CloseModal;
+  private String CloseModalTitle;
+  private String CloseModalDescription;
+  private String CloseModalCancel;
+  private String CloseModalOk;
   private String url;
   private JSObject headers;
   private String toolbarType;
@@ -14,6 +19,9 @@ public class Options {
   private boolean isPresentAfterPageLoad;
   private WebViewCallbacks callbacks;
   private PluginCall pluginCall;
+  private boolean VisibleTitle;
+  private String ToolbarColor;
+  private boolean ShowArrow;
 
   public PluginCall getPluginCall() {
     return pluginCall;
@@ -29,6 +37,46 @@ public class Options {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public boolean getCloseModal() {
+    return CloseModal;
+  }
+
+  public void setCloseModal(boolean CloseModal) {
+    this.CloseModal = CloseModal;
+  }
+
+  public String getCloseModalTitle() {
+    return CloseModalTitle;
+  }
+
+  public void setCloseModalTitle(String CloseModalTitle) {
+    this.CloseModalTitle = CloseModalTitle;
+  }
+
+  public String getCloseModalDescription() {
+    return CloseModalDescription;
+  }
+
+  public void setCloseModalDescription(String CloseModalDescription) {
+    this.CloseModalDescription = CloseModalDescription;
+  }
+
+  public String getCloseModalCancel() {
+    return CloseModalCancel;
+  }
+
+  public void setCloseModalCancel(String CloseModalCancel) {
+    this.CloseModalCancel = CloseModalCancel;
+  }
+
+  public String getCloseModalOk() {
+    return CloseModalOk;
+  }
+
+  public void setCloseModalOk(String CloseModalOk) {
+    this.CloseModalOk = CloseModalOk;
   }
 
   public String getUrl() {
@@ -59,6 +107,16 @@ public class Options {
     return shareDisclaimer;
   }
 
+  public boolean showReloadButton;
+
+  public boolean getShowReloadButton() {
+    return showReloadButton;
+  }
+
+  public void setShowReloadButton(boolean showReloadButton) {
+    this.showReloadButton = showReloadButton;
+  }
+
   public void setShareDisclaimer(JSObject shareDisclaimer) {
     this.shareDisclaimer = shareDisclaimer;
   }
@@ -85,5 +143,29 @@ public class Options {
 
   public void setCallbacks(WebViewCallbacks callbacks) {
     this.callbacks = callbacks;
+  }
+
+  public boolean getVisibleTitle() {
+    return VisibleTitle;
+  }
+
+  public void setVisibleTitle(boolean _visibleTitle) {
+    this.VisibleTitle = _visibleTitle;
+  }
+
+  public String getToolbarColor() {
+    return ToolbarColor;
+  }
+
+  public void setToolbarColor(String toolbarColor) {
+    this.ToolbarColor = toolbarColor;
+  }
+
+  public boolean showArrow() {
+    return ShowArrow;
+  }
+
+  public void setArrow(boolean _showArrow) {
+    this.ShowArrow = _showArrow;
   }
 }

@@ -15,6 +15,16 @@
         android:layout_gravity="start"
         android:background="#eeeeef"
         android:contentDescription="@string/close_button" />
+    <ImageButton
+        android:id="@+id/reloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="#eeeeef"
+        android:paddingRight="10dp"
+        android:contentDescription="@string/reload_button"
+        android:src="@drawable/ic_refresh"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/titleText"
@@ -34,7 +44,6 @@
         android:layout_gravity="end"
         android:background="#eeeeef"
         android:contentDescription="@string/forward_button"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:src="@drawable/arrow_forward_disabled" />
 

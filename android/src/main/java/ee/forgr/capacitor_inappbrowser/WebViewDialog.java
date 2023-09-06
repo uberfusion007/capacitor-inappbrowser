@@ -1,20 +1,15 @@
 package ee.forgr.capacitor_inappbrowser;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.GeolocationPermissions;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -33,11 +28,13 @@ public class WebViewDialog extends Dialog {
   private WebView _webView;
   private Toolbar _toolbar;
   private Options _options;
+  private Context _context;
   private boolean isInitialized = false;
 
   public WebViewDialog(Context context, int theme, Options options) {
     super(context, theme);
     this._options = options;
+    this._context = context;
     this.isInitialized = false;
   }
 
@@ -73,7 +70,7 @@ public class WebViewDialog extends Dialog {
       Iterator<String> keys = _options.getHeaders().keys();
       while (keys.hasNext()) {
         String key = keys.next();
-        if (TextUtils.equals(key, "User-Agent")) {
+        if (TextUtils.equals(key.toLowerCase(), "user-agent")) {
           _webView
             .getSettings()
             .setUserAgentString(_options.getHeaders().getString(key));
@@ -89,7 +86,6 @@ public class WebViewDialog extends Dialog {
 
     setupToolbar();
     setWebViewClient();
-    _webView.setWebChromeClient(new customChromeClient());
 
     if (!this._options.isPresentAfterPageLoad()) {
       show();
@@ -103,7 +99,7 @@ public class WebViewDialog extends Dialog {
       Iterator<String> keys = _options.getHeaders().keys();
       while (keys.hasNext()) {
         String key = keys.next();
-        if (TextUtils.equals(key, "User-Agent")) {
+        if (TextUtils.equals(key.toLowerCase(), "user-agent")) {
           _webView
             .getSettings()
             .setUserAgentString(_options.getHeaders().getString(key));
@@ -117,11 +113,20 @@ public class WebViewDialog extends Dialog {
 
   private void setTitle(String newTitleText) {
     TextView textView = (TextView) _toolbar.findViewById(R.id.titleText);
-    textView.setText(newTitleText);
+    if (_options.getVisibleTitle()) {
+      textView.setText(newTitleText);
+    } else {
+      textView.setText("");
+    }
   }
 
   private void setupToolbar() {
     _toolbar = this.findViewById(R.id.tool_bar);
+    try {
+      _toolbar.setBackgroundColor(Color.parseColor(_options.getToolbarColor()));
+    } catch (IllegalArgumentException e) {
+      _toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
+    }
     if (!TextUtils.isEmpty(_options.getTitle())) {
       this.setTitle(_options.getTitle());
     } else {
@@ -162,11 +167,47 @@ public class WebViewDialog extends Dialog {
       new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          dismiss();
-          _options.getCallbacks().closeEvent(_webView.getUrl());
+          // if closeModal true then display a native modal to check if the user is sure to close the browser
+          if (_options.getCloseModal()) {
+            new AlertDialog.Builder(_context)
+              .setTitle(_options.getCloseModalTitle())
+              .setMessage(_options.getCloseModalDescription())
+              .setPositiveButton(
+                _options.getCloseModalOk(),
+                new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                    // Close button clicked, do something
+                    dismiss();
+                    _options.getCallbacks().closeEvent(_webView.getUrl());
+                  }
+                }
+              )
+              .setNegativeButton(_options.getCloseModalCancel(), null)
+              .show();
+          } else {
+            dismiss();
+            _options.getCallbacks().closeEvent(_webView.getUrl());
+          }
         }
       }
     );
+
+    if (_options.showArrow()) {
+      closeButton.setBackgroundResource(R.drawable.arrow_forward_enabled);
+    }
+
+    if (_options.getShowReloadButton()) {
+      View reloadButton = _toolbar.findViewById(R.id.reloadButton);
+      reloadButton.setVisibility(View.VISIBLE);
+      reloadButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            _webView.reload();
+          }
+        }
+      );
+    }
 
     if (TextUtils.equals(_options.getToolbarType(), "activity")) {
       _toolbar.findViewById(R.id.forwardButton).setVisibility(View.GONE);
@@ -190,56 +231,6 @@ public class WebViewDialog extends Dialog {
           WebView view,
           WebResourceRequest request
         ) {
-          var url = request.getUrl().toString();
-          if (url.startsWith("intent://")) {
-            try {
-              Context context = view.getContext();
-              Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-
-              if (intent != null) {
-                view.stopLoading();
-
-                PackageManager packageManager = context.getPackageManager();
-                ResolveInfo info = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                if (info != null) {
-                  context.startActivity(intent);
-                } else {
-                  String fallbackUrl = intent.getStringExtra("browser_fallback_url");
-                  view.loadUrl(fallbackUrl);
-                }
-                return true;
-              }
-            } catch (URISyntaxException e) {
-              Log.e(getContext().getClass().getName(), "Can't resolve intent://", e);
-            }
-          } else if (url.startsWith("https://waze.com")) {
-            Context context = view.getContext();
-            try {
-              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-              intent.addCategory(Intent.CATEGORY_BROWSABLE);
-              context.startActivity(intent);
-              return true;
-            } catch (ActivityNotFoundException ex) {
-              // If Waze is not installed, open it in Google Play:
-              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
-              context.startActivity(intent);
-              return true;
-            }
-          } else if (url.startsWith("https://maps.google.com")) {
-            Context context = view.getContext();
-            try {
-              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-              intent.addCategory(Intent.CATEGORY_BROWSABLE);
-              intent.setPackage("com.google.android.apps.maps");
-              context.startActivity(intent);
-              return true;
-            } catch (ActivityNotFoundException ex) {
-              // If Google Maps is not installed, open it in Google Play:
-              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
-              context.startActivity(intent);
-              return true;
-            }
-          }
           return false;
         }
 
@@ -257,7 +248,17 @@ public class WebViewDialog extends Dialog {
           } catch (URISyntaxException e) {
             // Do nothing
           }
-          _options.getCallbacks().urlChangeEvent(url);
+        }
+
+        public void doUpdateVisitedHistory(
+          WebView view,
+          String url,
+          boolean isReload
+        ) {
+          if (!isReload) {
+            _options.getCallbacks().urlChangeEvent(url);
+          }
+          super.doUpdateVisitedHistory(view, url, isReload);
         }
 
         @Override
@@ -305,12 +306,6 @@ public class WebViewDialog extends Dialog {
         }
       }
     );
-  }
-
-  private class customChromeClient extends WebChromeClient {
-    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-      callback.invoke(origin, true, false);
-    }
   }
 
   @Override

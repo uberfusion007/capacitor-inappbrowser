@@ -108,6 +108,68 @@ export interface OpenWebViewOptions {
    * @default false
    */
   isPresentAfterPageLoad?: boolean;
+  /**
+   * Shows a reload button that reloads the web page
+   * @since 1.0.15
+   * @default false
+   */
+  showReloadButton?: boolean;
+  /**
+   * CloseModal: if true a confirm will be displayed when user clicks on close button, if false the browser will be closed immediately.
+   *
+   * @since 1.1.0
+   * @default false
+   */
+  closeModal?: boolean;
+  /**
+   * CloseModalTitle: title of the confirm when user clicks on close button, only on IOS
+   *
+   * @since 1.1.0
+   * @default 'Close'
+   */
+  closeModalTitle?: string;
+  /**
+   * CloseModalDescription: description of the confirm when user clicks on close button, only on IOS
+   *
+   * @since 1.1.0
+   * @default 'Are you sure you want to close this window?'
+   */
+  closeModalDescription?: string;
+  /**
+   * CloseModalOk: text of the confirm button when user clicks on close button, only on IOS
+   *
+   * @since 1.1.0
+   * @default 'Close'
+   */
+  closeModalOk?: string;
+  /**
+   * CloseModalCancel: text of the cancel button when user clicks on close button, only on IOS
+   *
+   * @since 1.1.0
+   * @default 'Cancel'
+   */
+  closeModalCancel?: string;
+  /**
+   * visibleTitle: if true the website title would be shown else shown empty
+   *
+   * @since 1.2.5
+   * @default true
+   */
+  visibleTitle?: boolean;
+  /**
+   * toolbarColor: color of the toolbar in hex format
+   *
+   * @since 1.2.5
+   * @default '#ffffff''
+   */
+  toolbarColor?: string;
+  /**
+   * showArrow: if true an arrow would be shown instead of cross for closing the window
+   *
+   * @since 1.2.5
+   * @default false
+   */
+  showArrow?: boolean;
 }
 
 // CapBrowser.addListener("urlChangeEvent", (info:  any) => {
