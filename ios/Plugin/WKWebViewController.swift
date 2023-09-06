@@ -28,6 +28,16 @@ private struct UrlsHandledByApp {
     @objc optional func webViewController(_ controller: WKWebViewController, decidePolicy url: URL, navigationType: NavigationType) -> Bool
 }
 
+extension Dictionary {
+    func mapKeys<T>(_ transform: (Key) throws -> T) rethrows -> [T: Value] {
+        var dictionary = [T: Value]()
+        for (key, value) in self {
+            dictionary[try transform(key)] = value
+        }
+        return dictionary
+    }
+}
+
 open class WKWebViewController: UIViewController {
 
     public init() {
@@ -74,12 +84,20 @@ open class WKWebViewController: UIViewController {
     var viewHeightLandscape: CGFloat?
     var viewHeightPortrait: CGFloat?
     var currentViewHeight: CGFloat?
+    open var closeModal = false
+    open var closeModalTitle = ""
+    open var closeModalDescription = ""
+    open var closeModalOk = ""
+    open var closeModalCancel = ""
 
     func setHeaders(headers: [String: String]) {
         self.headers = headers
-        let userAgent = self.headers?["User-Agent"]
+        let lowercasedHeaders = headers.mapKeys { $0.lowercased() }
+        let userAgent = lowercasedHeaders["user-agent"]
         self.headers?.removeValue(forKey: "User-Agent")
-        if userAgent != nil {
+        self.headers?.removeValue(forKey: "user-agent")
+
+        if let userAgent = userAgent {
             self.customUserAgent = userAgent
         }
     }
@@ -243,7 +261,7 @@ open class WKWebViewController: UIViewController {
         var topPadding = CGFloat(0.0)
         if #available(iOS 11.0, *) {
             let window = UIApplication.shared.keyWindow
-            bottomPadding = (window?.safeAreaInsets.bottom)!
+            bottomPadding = window?.safeAreaInsets.bottom ?? 0.0
             topPadding = (window?.safeAreaInsets.top)!
         }
         if UIDevice.current.orientation.isPortrait {
@@ -672,7 +690,7 @@ fileprivate extension WKWebViewController {
         }
     }
 
-    @objc func doneDidClick(sender: AnyObject) {
+    func closeView () {
         var canDismiss = true
         if let url = self.source?.url {
             canDismiss = delegate?.webViewController?(self, canDismiss: url) ?? true
@@ -682,6 +700,21 @@ fileprivate extension WKWebViewController {
             self.capBrowserPlugin?.notifyListeners("closeEvent", data: ["url": webView?.url?.absoluteString ?? ""])
             dismiss(animated: true, completion: nil)
         }
+    }
+
+    @objc func doneDidClick(sender: AnyObject) {
+        // check if closeModal is true, if true display alert before close
+        if self.closeModal {
+            let alert = UIAlertController(title: self.closeModalTitle, message: self.closeModalDescription, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: self.closeModalOk, style: UIAlertAction.Style.default, handler: { _ in
+                self.closeView()
+            }))
+            alert.addAction(UIAlertAction(title: self.closeModalCancel, style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.closeView()
+        }
+
     }
 
     @objc func customDidClick(sender: BlockBarButtonItem) {
