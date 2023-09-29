@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.12](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.11...1.2.12) (2023-09-28)
+
+
+### Bug Fixes
+
+* lint issue ([2641449](https://github.com/Cap-go/capacitor-inappbrowser/commit/264144947474cd5e2b1e797b416a0c432cdab8c8))
+
+### [1.2.11](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.10...1.2.11) (2023-09-28)
+
+
+### Bug Fixes
+
+* build issue ([db17c26](https://github.com/Cap-go/capacitor-inappbrowser/commit/db17c26fbff884e5de570b4301f89a3ac921551a))
+
+### [1.2.10](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.9...1.2.10) (2023-09-28)
+
+
+### Bug Fixes
+
+* add missing event close browser manually ([fa577e9](https://github.com/Cap-go/capacitor-inappbrowser/commit/fa577e94356404a54f065cfd8656b6256190433f))
+
+### [1.2.9](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.8...1.2.9) (2023-09-12)
+
 ### [1.2.8](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.7...1.2.8) (2023-09-07)
 
 
