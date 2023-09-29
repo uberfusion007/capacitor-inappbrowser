@@ -1,5 +1,6 @@
 import Foundation
 import Capacitor
+import WebKit
 
 extension UIColor {
 
@@ -16,6 +17,7 @@ extension UIColor {
     }
 
 }
+
 /**
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
@@ -96,6 +98,7 @@ public class InAppBrowserPlugin: CAPPlugin {
             }
 
             self.webViewController?.source = .remote(url!)
+            self.webViewController?.leftNavigaionBarItemTypes = self.getToolbarItems(toolbarType: toolbarType) + [.reload]
             self.webViewController?.leftNavigaionBarItemTypes = self.getToolbarItems(toolbarType: toolbarType)
             self.webViewController?.toolbarItemTypes = []
             self.webViewController?.doneBarButtonItemPosition = .right
@@ -143,6 +146,11 @@ public class InAppBrowserPlugin: CAPPlugin {
             result.append(.forward)
         }
         return result
+    }
+
+    @objc func reload(_ call: CAPPluginCall) {
+        self.webViewController?.reload()
+        call.resolve()
     }
 
     @objc func setUrl(_ call: CAPPluginCall) {
@@ -210,7 +218,7 @@ public class InAppBrowserPlugin: CAPPlugin {
             self.navigationWebViewController?.navigationBar.isTranslucent = false
             self.navigationWebViewController?.toolbar.isTranslucent = false
             self.navigationWebViewController?.navigationBar.backgroundColor = .white
-            var inputString: String = call.getString("toolbarColor", "#ffffff")
+            let inputString: String = call.getString("toolbarColor", "#ffffff")
             var color: UIColor = UIColor(hexString: "#ffffff")
             if self.isHexColorCode(inputString) {
                 color = UIColor(hexString: inputString)
@@ -228,6 +236,7 @@ public class InAppBrowserPlugin: CAPPlugin {
     @objc func close(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
             self.navigationWebViewController?.dismiss(animated: true, completion: nil)
+            self.notifyListeners("closeEvent", data: ["url": self.webViewController?.url?.absoluteString ?? ""])
             call.resolve()
         }
     }

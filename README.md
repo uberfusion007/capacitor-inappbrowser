@@ -32,6 +32,7 @@ InAppBrowser.open("YOUR_URL");
 * [`addListener('closeEvent', ...)`](#addlistenercloseevent)
 * [`addListener('confirmBtnClicked', ...)`](#addlistenerconfirmbtnclicked)
 * [`removeAllListeners()`](#removealllisteners)
+* [`reload()`](#reload)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
 * [Enums](#enums)
@@ -187,6 +188,21 @@ removeAllListeners() => Promise<void>
 ```
 
 Remove all listeners for this plugin.
+
+**Since:** 1.0.0
+
+--------------------
+
+
+### reload()
+
+```typescript
+reload() => Promise<any>
+```
+
+Reload the current web page.
+
+**Returns:** <code>Promise&lt;any&gt;</code>
 
 **Since:** 1.0.0
 
