@@ -262,7 +262,7 @@ open class WKWebViewController: UIViewController {
         if #available(iOS 11.0, *) {
             let window = UIApplication.shared.keyWindow
             bottomPadding = window?.safeAreaInsets.bottom ?? 0.0
-            topPadding = (window?.safeAreaInsets.top)!
+            topPadding = window?.safeAreaInsets.top ?? 0.0
         }
         if UIDevice.current.orientation.isPortrait {
             self.navigationController?.toolbar.isHidden = false
