@@ -1,5 +1,6 @@
 package ee.forgr.capacitor_inappbrowser;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.PermissionRequest;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -24,6 +26,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,12 +40,27 @@ public class WebViewDialog extends Dialog {
   private Toolbar _toolbar;
   private Options _options;
   private Context _context;
+  public Activity activity;
   private boolean isInitialized = false;
 
-  public WebViewDialog(Context context, int theme, Options options) {
+  public PermissionRequest currentPermissionRequest;
+
+  public interface PermissionHandler {
+    void handleCameraPermissionRequest(PermissionRequest request);
+  }
+
+  private PermissionHandler permissionHandler;
+
+  public WebViewDialog(
+    Context context,
+    int theme,
+    Options options,
+    PermissionHandler permissionHandler
+  ) {
     super(context, theme);
     this._options = options;
     this._context = context;
+    this.permissionHandler = permissionHandler;
     this.isInitialized = false;
   }
 
@@ -73,6 +91,8 @@ public class WebViewDialog extends Dialog {
       .setPluginState(android.webkit.WebSettings.PluginState.ON);
     _webView.getSettings().setLoadWithOverviewMode(true);
     _webView.getSettings().setUseWideViewPort(true);
+    _webView.getSettings().setAllowFileAccessFromFileURLs(true);
+    _webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
 
     Map<String, String> requestHeaders = new HashMap<>();
     if (_options.getHeaders() != null) {
@@ -391,6 +411,37 @@ public class WebViewDialog extends Dialog {
   private class customChromeClient extends WebChromeClient {
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
       callback.invoke(origin, true, false);
+    }
+
+    @Override
+    public void onPermissionRequest(PermissionRequest request) {
+      super.onPermissionRequest(request);
+      Log.i("INAPPBROWSER", "onPermissionRequest " + request.getResources().toString());
+      final String[] requestedResources = request.getResources();
+      for (String r : requestedResources) {
+        Log.i("INAPPBROWSER", "requestedResources " + r);
+        if (r.equals(PermissionRequest.RESOURCE_VIDEO_CAPTURE)) {
+          Log.i("INAPPBROWSER", "RESOURCE_VIDEO_CAPTURE req");
+          // Store the permission request
+          currentPermissionRequest = request;
+          // Initiate the permission request through the plugin
+          if (permissionHandler != null) {
+            permissionHandler.handleCameraPermissionRequest(request);
+          }
+          break;
+        }
+      }
+    }
+
+    @Override
+    public void onPermissionRequestCanceled(PermissionRequest request) {
+      super.onPermissionRequestCanceled(request);
+      Toast.makeText(WebViewDialog.this.activity, "Permission Denied", Toast.LENGTH_SHORT).show();
+      // Handle the denied permission
+      if (currentPermissionRequest != null) {
+        currentPermissionRequest.deny();
+        currentPermissionRequest = null;
+      }
     }
   }
 
