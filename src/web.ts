@@ -4,6 +4,8 @@ import type {
   InAppBrowserPlugin,
   OpenWebViewOptions,
   OpenOptions,
+  GetCookieOptions,
+  ClearCookieOptions,
 } from "./definitions";
 
 export class InAppBrowserWeb extends WebPlugin implements InAppBrowserPlugin {
@@ -12,9 +14,14 @@ export class InAppBrowserWeb extends WebPlugin implements InAppBrowserPlugin {
     return options;
   }
 
-  async clearCookies(): Promise<any> {
-    console.log("cleanCookies");
+  async clearCookies(options: ClearCookieOptions): Promise<any> {
+    console.log("cleanCookies", options);
     return;
+  }
+
+  async getCookies(options: GetCookieOptions): Promise<any> {
+    // Web implementation to get cookies
+    return options;
   }
 
   async openWebView(options: OpenWebViewOptions): Promise<any> {
