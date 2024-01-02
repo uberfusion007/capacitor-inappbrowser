@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.0...1.3.1) (2023-12-31)
+
+
+### Bug Fixes
+
+* lint ([30fde6f](https://github.com/Cap-go/capacitor-inappbrowser/commit/30fde6f0a5cd6403041540e50fe173321e5efe4a))
+* readme ([43f0fc7](https://github.com/Cap-go/capacitor-inappbrowser/commit/43f0fc718b9b398ee38a05dcd3fab6a159bf14a0))
+
+## [1.3.0](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.20...1.3.0) (2023-12-31)
+
+
+### Features
+
+* add isInspectable and isAnimated properties to OpenWebViewOptions ([4fff7c2](https://github.com/Cap-go/capacitor-inappbrowser/commit/4fff7c2374af4c60ab77929016df0f680c396368))
+
+
+### Bug Fixes
+
+* definition ([3e298c2](https://github.com/Cap-go/capacitor-inappbrowser/commit/3e298c25b8faf12cc17f66441660707cd3566951))
+
+### [1.2.20](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.19...1.2.20) (2023-12-31)
+
+
+### Bug Fixes
+
+* ios ([3215c76](https://github.com/Cap-go/capacitor-inappbrowser/commit/3215c764d44cf8a3377fce0cfb800f1c281cd5ce))
+* lint ([69270ba](https://github.com/Cap-go/capacitor-inappbrowser/commit/69270ba3d45e3a8a704ea5cce23aa1efb78c94eb))
+
 ### [1.2.19](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.2.18...1.2.19) (2023-11-23)
 
 
