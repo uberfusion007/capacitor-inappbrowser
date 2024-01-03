@@ -192,6 +192,7 @@ public class InAppBrowserPlugin
       CookieManager.getInstance().removeAllCookies(null);
       CookieManager.getInstance().removeSessionCookies(null);
       CookieManager.getInstance().flush();
+      call.resolve();
     } else {
       CookieManager cookieManager = CookieManager.getInstance();
       String cookie = cookieManager.getCookie(url);
