@@ -245,8 +245,6 @@ open class WKWebViewController: UIViewController {
             self.previousToolbarState = (navigation.toolbar.tintColor, navigation.toolbar.isHidden)
         }
 
-        //        self.restateViewHeight()
-
         if let s = self.source {
             self.load(source: s)
         } else {
@@ -379,6 +377,10 @@ public extension WKWebViewController {
     }
     func reload() {
         webView?.reload()
+    }
+
+    func executeScript(script: String, completion: ((Any?, Error?) -> Void)? = nil) {
+        webView?.evaluateJavaScript(script, completionHandler: completion)
     }
 }
 
