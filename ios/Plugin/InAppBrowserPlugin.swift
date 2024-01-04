@@ -206,6 +206,14 @@ public class InAppBrowserPlugin: CAPPlugin {
         call.resolve()
     }
 
+    @objc func executeScript(_ call: CAPPluginCall) {
+        guard let script = call.getString("code") else {
+            call.reject("Cannot get script to execute")
+            return
+        }
+        self.webViewController?.executeScript(script: script)
+    }
+
     func isHexColorCode(_ input: String) -> Bool {
         let hexColorRegex = "^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$"
 
