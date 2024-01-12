@@ -216,9 +216,11 @@ open class WKWebViewController: UIViewController {
         let webConfiguration = WKWebViewConfiguration()
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 
+        #if compiler(>=5.8) && DEBUG
         if #available(iOS 16.4, *) {
             webView.isInspectable = isInspectable
         }
+        #endif
 
         webView.uiDelegate = self
         webView.navigationDelegate = self
