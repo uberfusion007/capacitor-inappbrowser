@@ -19,6 +19,8 @@ import { InAppBrowser } from '@capgo/inappbrowser'
 InAppBrowser.open({ url: "YOUR_URL" });
 ```
 
+Web platform is not supported. Use `window.open` instead.
+
 ### Camera usage
 
 if you need the Camera to work in Android, you need to add the following to your `AndroidManifest.xml` file:

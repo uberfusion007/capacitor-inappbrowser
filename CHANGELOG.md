@@ -2,6 +2,85 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.4.0...1.4.1) (2024-03-20)
+
+## [1.4.0](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.17...1.4.0) (2024-03-20)
+
+
+### Features
+
+* **android:** handle opening deeplinks inside webview ([4b820e1](https://github.com/Cap-go/capacitor-inappbrowser/commit/4b820e1ebec241fc82870bbae37366f27f200d00))
+
+
+### Bug Fixes
+
+* lint ([a182cc4](https://github.com/Cap-go/capacitor-inappbrowser/commit/a182cc4c02a128e6151d9754f10523c270d764de))
+
+### [1.3.17](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.16...1.3.17) (2024-03-20)
+
+
+### Bug Fixes
+
+* **android:** fixes compiling for sdk 33 ([5323a79](https://github.com/Cap-go/capacitor-inappbrowser/commit/5323a791a1c62319cfce8641e871bf736328a1e7))
+
+### [1.3.16](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.15...1.3.16) (2024-03-19)
+
+
+### Bug Fixes
+
+* close dialog better ([44db2c6](https://github.com/Cap-go/capacitor-inappbrowser/commit/44db2c620341ed394ca8070f00876fd9c4e07089))
+
+### [1.3.15](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.14...1.3.15) (2024-03-18)
+
+
+### Bug Fixes
+
+* inspectable issue ([b17aa5b](https://github.com/Cap-go/capacitor-inappbrowser/commit/b17aa5baf44b98ceae3f335d8020a13400dead3b))
+
+### [1.3.14](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.13...1.3.14) (2024-03-18)
+
+
+### Bug Fixes
+
+* update deprecated ([7cbe8e0](https://github.com/Cap-go/capacitor-inappbrowser/commit/7cbe8e0c9833164bdd070a144897841dbdbf26ba))
+
+### [1.3.13](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.12...1.3.13) (2024-03-18)
+
+
+### Bug Fixes
+
+* use last checkout version ([b58d727](https://github.com/Cap-go/capacitor-inappbrowser/commit/b58d7271f934d847fa7fb3a67d61341344afc737))
+
+### [1.3.12](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.11...1.3.12) (2024-03-18)
+
+### [1.3.11](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.10...1.3.11) (2024-03-18)
+
+
+### Bug Fixes
+
+* project file ([3465e30](https://github.com/Cap-go/capacitor-inappbrowser/commit/3465e30d2c8428dbdf74f535848aa9334b4d5673))
+
+### [1.3.10](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.9...1.3.10) (2024-03-18)
+
+
+### Bug Fixes
+
+* lint ([93a8abd](https://github.com/Cap-go/capacitor-inappbrowser/commit/93a8abd83be4a989e324f7684cb120fccb49622c))
+
+### [1.3.9](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.8...1.3.9) (2024-03-18)
+
+
+### Bug Fixes
+
+* potential crash at setUrl ([5a801f3](https://github.com/Cap-go/capacitor-inappbrowser/commit/5a801f39e1b6f800dde5b8b69002630844c95e05))
+
+### [1.3.8](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.7...1.3.8) (2024-03-18)
+
+
+### Bug Fixes
+
+* make resize crash safe ([2697a82](https://github.com/Cap-go/capacitor-inappbrowser/commit/2697a82a842b4e65d1564cfa03a7c92339d3e879))
+
 ### [1.3.7](https://github.com/Cap-go/capacitor-inappbrowser/compare/1.3.6...1.3.7) (2024-01-12)
 
 

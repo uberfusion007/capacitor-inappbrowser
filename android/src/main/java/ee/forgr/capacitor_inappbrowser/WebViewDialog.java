@@ -340,6 +340,16 @@ public class WebViewDialog extends Dialog {
               context.startActivity(intent);
               return true;
             }
+          } else if (!url.startsWith("https://") && !url.startsWith("http://")) {
+            try {
+              Context context = view.getContext();
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              context.startActivity(intent);
+              return true;
+            } catch (ActivityNotFoundException e) {
+              // Do nothing
+            }
           }
           return false;
         }

@@ -216,11 +216,10 @@ open class WKWebViewController: UIViewController {
         let webConfiguration = WKWebViewConfiguration()
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 
-        #if compiler(>=5.8) && DEBUG
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = isInspectable
+        if webView.responds(to: Selector(("setInspectable:"))) {
+            // Fix: https://stackoverflow.com/questions/76216183/how-to-debug-wkwebview-in-ios-16-4-1-using-xcode-14-2/76603043#76603043
+            webView.perform(Selector(("setInspectable:")), with: isInspectable)
         }
-        #endif
 
         webView.uiDelegate = self
         webView.navigationDelegate = self
@@ -264,7 +263,7 @@ open class WKWebViewController: UIViewController {
         var bottomPadding = CGFloat(0.0)
         var topPadding = CGFloat(0.0)
         if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow
+            let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
             bottomPadding = window?.safeAreaInsets.bottom ?? 0.0
             topPadding = window?.safeAreaInsets.top ?? 0.0
         }
@@ -273,10 +272,10 @@ open class WKWebViewController: UIViewController {
             if self.viewHeightPortrait == nil {
                 self.viewHeightPortrait = self.view.safeAreaLayoutGuide.layoutFrame.size.height
                 if toolbarItemTypes.count == 0 {
-                    self.viewHeightPortrait! = self.viewHeightPortrait! + bottomPadding
+                    self.viewHeightPortrait! += bottomPadding
                 }
                 if self.navigationController?.navigationBar.isHidden == true {
-                    self.viewHeightPortrait = self.viewHeightPortrait! + topPadding
+                    self.viewHeightPortrait! += topPadding
                 }
             }
             self.currentViewHeight = self.viewHeightPortrait
@@ -285,10 +284,10 @@ open class WKWebViewController: UIViewController {
             if self.viewHeightLandscape == nil {
                 self.viewHeightLandscape = self.view.safeAreaLayoutGuide.layoutFrame.size.height
                 if toolbarItemTypes.count == 0 {
-                    self.viewHeightLandscape! = self.viewHeightLandscape! + bottomPadding
+                    self.viewHeightLandscape! += bottomPadding
                 }
                 if self.navigationController?.navigationBar.isHidden == true {
-                    self.viewHeightLandscape = self.viewHeightLandscape! + topPadding
+                    self.viewHeightLandscape! += topPadding
                 }
             }
             self.currentViewHeight = self.viewHeightLandscape
