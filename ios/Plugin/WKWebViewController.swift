@@ -89,6 +89,7 @@ open class WKWebViewController: UIViewController {
     open var closeModalDescription = ""
     open var closeModalOk = ""
     open var closeModalCancel = ""
+    open var ignoreUntrustedSSLError = false
 
     func setHeaders(headers: [String: String]) {
         self.headers = headers
@@ -131,7 +132,7 @@ open class WKWebViewController: UIViewController {
 
     open var websiteTitleInNavigationBar = true
     open var doneBarButtonItemPosition: NavigationBarPosition = .right
-    open var leftNavigaionBarItemTypes: [BarButtonItemType] = []
+    open var leftNavigationBarItemTypes: [BarButtonItemType] = []
     open var rightNavigaionBarItemTypes: [BarButtonItemType] = []
     open var toolbarItemTypes: [BarButtonItemType] = [.back, .forward, .reload, .activity]
 
@@ -467,7 +468,7 @@ fileprivate extension WKWebViewController {
         //        if presentingViewController != nil {
         switch doneBarButtonItemPosition {
         case .left:
-            if !leftNavigaionBarItemTypes.contains(where: { type in
+            if !leftNavigationBarItemTypes.contains(where: { type in
                 switch type {
                 case .done:
                     return true
@@ -475,7 +476,7 @@ fileprivate extension WKWebViewController {
                     return false
                 }
             }) {
-                leftNavigaionBarItemTypes.insert(.done, at: 0)
+                leftNavigationBarItemTypes.insert(.done, at: 0)
             }
         case .right:
             if !rightNavigaionBarItemTypes.contains(where: { type in
@@ -493,7 +494,7 @@ fileprivate extension WKWebViewController {
         }
         //        }
 
-        navigationItem.leftBarButtonItems = leftNavigaionBarItemTypes.map {
+        navigationItem.leftBarButtonItems = leftNavigationBarItemTypes.map {
             barButtonItemType in
             if let barButtonItem = barButtonItem(barButtonItemType) {
                 return barButtonItem
@@ -780,7 +781,20 @@ extension WKWebViewController: WKNavigationDelegate {
             let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
             completionHandler(.useCredential, credential)
         } else {
-            completionHandler(.performDefaultHandling, nil)
+            guard self.ignoreUntrustedSSLError else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+            /* allows to open links with self-signed certificates
+             Follow Apple's guidelines https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication
+             */
+            guard let serverTrust = challenge.protectionSpace.serverTrust  else {
+                completionHandler(.useCredential, nil)
+                return
+            }
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
+
         }
     }
 

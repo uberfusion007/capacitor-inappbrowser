@@ -42,9 +42,9 @@ Then the permission will be asked when the camera is used.
 * [`openWebView(...)`](#openwebview)
 * [`executeScript(...)`](#executescript)
 * [`setUrl(...)`](#seturl)
-* [`addListener('urlChangeEvent', ...)`](#addlistenerurlchangeevent)
-* [`addListener('closeEvent', ...)`](#addlistenercloseevent)
-* [`addListener('confirmBtnClicked', ...)`](#addlistenerconfirmbtnclicked)
+* [`addListener('urlChangeEvent', ...)`](#addlistenerurlchangeevent-)
+* [`addListener('closeEvent', ...)`](#addlistenercloseevent-)
+* [`addListener('confirmBtnClicked', ...)`](#addlistenerconfirmbtnclicked-)
 * [`removeAllListeners()`](#removealllisteners)
 * [`reload()`](#reload)
 * [Interfaces](#interfaces)
@@ -174,7 +174,7 @@ setUrl(options: { url: string; }) => Promise<any>
 ### addListener('urlChangeEvent', ...)
 
 ```typescript
-addListener(eventName: "urlChangeEvent", listenerFunc: UrlChangeListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: "urlChangeEvent", listenerFunc: UrlChangeListener) => Promise<PluginListenerHandle>
 ```
 
 Listen for url change, only for openWebView
@@ -184,7 +184,7 @@ Listen for url change, only for openWebView
 | **`eventName`**    | <code>'urlChangeEvent'</code>                                   |
 | **`listenerFunc`** | <code><a href="#urlchangelistener">UrlChangeListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 0.0.1
 
@@ -194,7 +194,7 @@ Listen for url change, only for openWebView
 ### addListener('closeEvent', ...)
 
 ```typescript
-addListener(eventName: "closeEvent", listenerFunc: UrlChangeListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: "closeEvent", listenerFunc: UrlChangeListener) => Promise<PluginListenerHandle>
 ```
 
 Listen for close click only for openWebView
@@ -204,7 +204,7 @@ Listen for close click only for openWebView
 | **`eventName`**    | <code>'closeEvent'</code>                                       |
 | **`listenerFunc`** | <code><a href="#urlchangelistener">UrlChangeListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 0.4.0
 
@@ -214,7 +214,7 @@ Listen for close click only for openWebView
 ### addListener('confirmBtnClicked', ...)
 
 ```typescript
-addListener(eventName: "confirmBtnClicked", listenerFunc: ConfirmBtnListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: "confirmBtnClicked", listenerFunc: ConfirmBtnListener) => Promise<PluginListenerHandle>
 ```
 
 Will be triggered when user clicks on confirm button when disclaimer is required, works only on iOS
@@ -224,7 +224,7 @@ Will be triggered when user clicks on confirm button when disclaimer is required
 | **`eventName`**    | <code>'confirmBtnClicked'</code>                                  |
 | **`listenerFunc`** | <code><a href="#confirmbtnlistener">ConfirmBtnListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 0.0.1
 
@@ -285,11 +285,11 @@ Reload the current web page.
 
 #### HttpCookie
 
-| Prop        | Type                |
-| ----------- | ------------------- |
-| **`url`**   | <code>string</code> |
-| **`key`**   | <code>string</code> |
-| **`value`** | <code>string</code> |
+| Prop        | Type                | Description              |
+| ----------- | ------------------- | ------------------------ |
+| **`url`**   | <code>string</code> | The URL of the cookie.   |
+| **`key`**   | <code>string</code> | The key of the cookie.   |
+| **`value`** | <code>string</code> | The value of the cookie. |
 
 
 #### GetCookieOptions
@@ -325,6 +325,7 @@ Reload the current web page.
 | **`visibleTitle`**                     | <code>boolean</code>                                            | visibleTitle: if true the website title would be shown else shown empty                                                                                                           | <code>true</code>                                          | 1.2.5  |
 | **`toolbarColor`**                     | <code>string</code>                                             | toolbarColor: color of the toolbar in hex format                                                                                                                                  | <code>'#ffffff''</code>                                    | 1.2.5  |
 | **`showArrow`**                        | <code>boolean</code>                                            | showArrow: if true an arrow would be shown instead of cross for closing the window                                                                                                | <code>false</code>                                         | 1.2.5  |
+| **`ignoreUntrustedSSLError`**          | <code>boolean</code>                                            | ignoreUntrustedSSLError: if true, the webview will ignore untrusted SSL errors allowing the user to view the website.                                                             | <code>false</code>                                         | 6.1.0  |
 
 
 #### DisclaimerOptions
@@ -377,9 +378,7 @@ Construct a type with the properties of T except for those in type K.
 
 From T, pick a set of properties whose keys are in the union K
 
-<code>{
- [P in K]: T[P];
- }</code>
+<code>{ [P in K]: T[P]; }</code>
 
 
 #### Exclude
@@ -393,9 +392,7 @@ From T, pick a set of properties whose keys are in the union K
 
 Construct a type with a set of properties K of type T
 
-<code>{
- [P in K]: T;
- }</code>
+<code>{ [P in K]: T; }</code>
 
 
 #### GetCookieOptions
