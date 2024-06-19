@@ -130,6 +130,7 @@ public class InAppBrowserPlugin: CAPPlugin {
         if toolbarType != "activity" {
             disclaimerContent = nil
         }
+        let ignoreUntrustedSSLError = call.getBool("ignoreUntrustedSSLError", false)
 
         self.isPresentAfterPageLoad = call.getBool("isPresentAfterPageLoad", false)
         let showReloadButton = call.getBool("showReloadButton", false)
@@ -145,8 +146,8 @@ public class InAppBrowserPlugin: CAPPlugin {
             }
 
             self.webViewController?.source = .remote(url!)
-            self.webViewController?.leftNavigaionBarItemTypes = self.getToolbarItems(toolbarType: toolbarType) + [.reload]
-            self.webViewController?.leftNavigaionBarItemTypes = self.getToolbarItems(toolbarType: toolbarType)
+            self.webViewController?.leftNavigationBarItemTypes = self.getToolbarItems(toolbarType: toolbarType) + [.reload]
+            self.webViewController?.leftNavigationBarItemTypes = self.getToolbarItems(toolbarType: toolbarType)
             self.webViewController?.toolbarItemTypes = []
             self.webViewController?.doneBarButtonItemPosition = .right
             if call.getBool("showArrow", false) {
@@ -165,18 +166,20 @@ public class InAppBrowserPlugin: CAPPlugin {
                 self.webViewController?.closeModalOk = closeModalOk
                 self.webViewController?.closeModalCancel = closeModalCancel
             }
+            self.webViewController?.ignoreUntrustedSSLError = ignoreUntrustedSSLError
             self.navigationWebViewController = UINavigationController.init(rootViewController: self.webViewController!)
             self.navigationWebViewController?.navigationBar.isTranslucent = false
             self.navigationWebViewController?.toolbar.isTranslucent = false
             self.navigationWebViewController?.navigationBar.backgroundColor = backgroundColor
             self.navigationWebViewController?.toolbar.backgroundColor = backgroundColor
+            self.navigationWebViewController?.toolbar.tintColor = backgroundColor == UIColor.black ? UIColor.white : UIColor.black
             self.navigationWebViewController?.modalPresentationStyle = .fullScreen
             if toolbarType == "blank" {
                 self.navigationWebViewController?.navigationBar.isHidden = true
             }
             if showReloadButton {
                 let toolbarItems = self.getToolbarItems(toolbarType: toolbarType)
-                self.webViewController?.leftNavigaionBarItemTypes = toolbarItems + [.reload]
+                self.webViewController?.leftNavigationBarItemTypes = toolbarItems + [.reload]
             }
             if !self.isPresentAfterPageLoad {
                 self.presentView(isAnimated: isAnimated)
@@ -273,7 +276,7 @@ public class InAppBrowserPlugin: CAPPlugin {
             }
 
             self.webViewController?.source = .remote(url!)
-            self.webViewController?.leftNavigaionBarItemTypes = [.reload]
+            self.webViewController?.leftNavigationBarItemTypes = [.reload]
             self.webViewController?.toolbarItemTypes = [.back, .forward, .activity]
             self.webViewController?.capBrowserPlugin = self
             self.webViewController?.hasDynamicTitle = true

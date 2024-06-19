@@ -1,5 +1,6 @@
 package ee.forgr.capacitor_inappbrowser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.PermissionRequest;
 import android.webkit.GeolocationPermissions;
+import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -44,6 +48,9 @@ public class WebViewDialog extends Dialog {
   private boolean isInitialized = false;
 
   public PermissionRequest currentPermissionRequest;
+  public static final int FILE_CHOOSER_REQUEST_CODE = 1000;
+  public ValueCallback<Uri> mUploadMessage;
+  public ValueCallback<Uri[]> mFilePathCallback;
 
   public interface PermissionHandler {
     void handleCameraPermissionRequest(PermissionRequest request);
@@ -121,6 +128,20 @@ public class WebViewDialog extends Dialog {
       show();
       _options.getPluginCall().resolve();
     }
+  }
+
+  private void openFileChooser(
+    ValueCallback<Uri[]> filePathCallback,
+    String acceptType
+  ) {
+    mFilePathCallback = filePathCallback;
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    intent.setType(acceptType); // Default to */*
+    activity.startActivityForResult(
+      Intent.createChooser(intent, "Select File"),
+      FILE_CHOOSER_REQUEST_CODE
+    );
   }
 
   public void reload() {
@@ -364,7 +385,9 @@ public class WebViewDialog extends Dialog {
           super.onPageStarted(view, url, favicon);
           try {
             URI uri = new URI(url);
-            setTitle(uri.getHost());
+            if (TextUtils.isEmpty(_options.getTitle())) {
+              setTitle(uri.getHost());
+            }
           } catch (URISyntaxException e) {
             // Do nothing
           }
@@ -424,6 +447,23 @@ public class WebViewDialog extends Dialog {
           super.onReceivedError(view, request, error);
           _options.getCallbacks().pageLoadError();
         }
+
+        @SuppressLint("WebViewClientOnReceivedSslError")
+        @Override
+        public void onReceivedSslError(
+          WebView view,
+          SslErrorHandler handler,
+          SslError error
+        ) {
+          boolean ignoreSSLUntrustedError = _options.ignoreUntrustedSSLError();
+          if (
+            ignoreSSLUntrustedError &&
+            error.getPrimaryError() == SslError.SSL_UNTRUSTED
+          ) handler.proceed();
+          else {
+            super.onReceivedSslError(view, handler, error);
+          }
+        }
       }
     );
   }
@@ -431,6 +471,20 @@ public class WebViewDialog extends Dialog {
   private class customChromeClient extends WebChromeClient {
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
       callback.invoke(origin, true, false);
+    }
+
+    // Enable file open dialog
+    @Override
+    public boolean onShowFileChooser(
+      WebView webView,
+      ValueCallback<Uri[]> filePathCallback,
+      WebChromeClient.FileChooserParams fileChooserParams
+    ) {
+      openFileChooser(
+        filePathCallback,
+        fileChooserParams.getAcceptTypes()[0]
+      );
+      return true;
     }
 
     @Override
@@ -469,10 +523,8 @@ public class WebViewDialog extends Dialog {
   public void onBackPressed() {
     if (
       _webView.canGoBack() &&
-      (
-        TextUtils.equals(_options.getToolbarType(), "navigation") ||
-        _options.getActiveNativeNavigationForWebview()
-      )
+      (TextUtils.equals(_options.getToolbarType(), "navigation") ||
+        _options.getActiveNativeNavigationForWebview())
     ) {
       _webView.goBack();
     } else if (!_options.getDisableGoBackOnNativeApplication()) {
