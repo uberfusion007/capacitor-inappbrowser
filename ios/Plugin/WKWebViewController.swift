@@ -214,6 +214,12 @@ open class WKWebViewController: UIViewController {
         self.edgesForExtendedLayout = [.bottom]
 
         let webConfiguration = WKWebViewConfiguration()
+        
+        // Fixes for allowing iOS to use window.open()
+        let preferences = WKPreferences()
+        preferences.javaScriptCanOpenWindowsAutomatically = true
+        webConfiguration.preferences = preferences
+        
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 
         if webView.responds(to: Selector(("setInspectable:"))) {
@@ -774,6 +780,13 @@ extension WKWebViewController: WKUIDelegate {
         }))
 
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
     }
 }
 
