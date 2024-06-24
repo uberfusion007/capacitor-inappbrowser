@@ -150,13 +150,11 @@ open class WKWebViewController: UIViewController {
     fileprivate var originalUserAgent: String?
 
     fileprivate lazy var backBarButtonItem: UIBarButtonItem = {
-        let bundle = Bundle(for: WKWebViewController.self)
-        return UIBarButtonItem(image: backBarButtonItemImage ?? UIImage(named: "Back", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(backDidClick(sender:)))
+        return UIBarButtonItem(image: backBarButtonItemImage ?? UIImage(named: "Back"), style: .plain, target: self, action: #selector(backDidClick(sender:)))
     }()
 
     fileprivate lazy var forwardBarButtonItem: UIBarButtonItem = {
-        let bundle = Bundle(for: WKWebViewController.self)
-        return UIBarButtonItem(image: forwardBarButtonItemImage ?? UIImage(named: "Forward", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(forwardDidClick(sender:)))
+        return UIBarButtonItem(image: forwardBarButtonItemImage ?? UIImage(named: "Forward"), style: .plain, target: self, action: #selector(forwardDidClick(sender:)))
     }()
 
     fileprivate lazy var reloadBarButtonItem: UIBarButtonItem = {
