@@ -165,6 +165,7 @@ public class InAppBrowserPlugin: CAPPlugin {
                 self.webViewController?.closeModalOk = closeModalOk
                 self.webViewController?.closeModalCancel = closeModalCancel
             }
+            self.webViewController?.allowJavascriptOpenWindows = call.getBool("allowJavascriptOpenWindows", false)
             self.navigationWebViewController = UINavigationController.init(rootViewController: self.webViewController!)
             self.navigationWebViewController?.navigationBar.isTranslucent = false
             self.navigationWebViewController?.toolbar.isTranslucent = false
@@ -277,6 +278,7 @@ public class InAppBrowserPlugin: CAPPlugin {
             self.webViewController?.toolbarItemTypes = [.back, .forward, .activity]
             self.webViewController?.capBrowserPlugin = self
             self.webViewController?.hasDynamicTitle = true
+            self.webViewController?.allowJavascriptOpenWindows = call.getBool("allowJavascriptOpenWindows", false)
             self.navigationWebViewController = UINavigationController.init(rootViewController: self.webViewController!)
             self.navigationWebViewController?.navigationBar.isTranslucent = false
             self.navigationWebViewController?.toolbar.isTranslucent = false

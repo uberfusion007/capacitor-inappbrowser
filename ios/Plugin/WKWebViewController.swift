@@ -140,6 +140,9 @@ open class WKWebViewController: UIViewController {
     open var reloadBarButtonItemImage: UIImage?
     open var stopBarButtonItemImage: UIImage?
     open var activityBarButtonItemImage: UIImage?
+    
+    // Enable javaScriptCanOpenWindowsAutomatically
+    open var allowJavascriptOpenWindows = false
 
     fileprivate var webView: WKWebView?
     fileprivate var progressView: UIProgressView?
@@ -215,7 +218,7 @@ open class WKWebViewController: UIViewController {
         
         // Fixes for allowing iOS to use window.open()
         let preferences = WKPreferences()
-        preferences.javaScriptCanOpenWindowsAutomatically = true
+        preferences.javaScriptCanOpenWindowsAutomatically = allowJavascriptOpenWindows
         webConfiguration.preferences = preferences
         
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
