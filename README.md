@@ -286,11 +286,11 @@ Reload the current web page.
 
 #### HttpCookie
 
-| Prop        | Type                | Description              |
-| ----------- | ------------------- | ------------------------ |
-| **`url`**   | <code>string</code> | The URL of the cookie.   |
-| **`key`**   | <code>string</code> | The key of the cookie.   |
-| **`value`** | <code>string</code> | The value of the cookie. |
+| Prop        | Type                |
+| ----------- | ------------------- |
+| **`url`**   | <code>string</code> |
+| **`key`**   | <code>string</code> |
+| **`value`** | <code>string</code> |
 
 
 #### GetCookieOptions
@@ -327,7 +327,8 @@ Reload the current web page.
 | **`toolbarColor`**                     | <code>string</code>                                             | toolbarColor: color of the toolbar in hex format                                                                                                                                  | <code>'#ffffff''</code>                                    | 1.2.5  |
 | **`showArrow`**                        | <code>boolean</code>                                            | showArrow: if true an arrow would be shown instead of cross for closing the window                                                                                                | <code>false</code>                                         | 1.2.5  |
 | **`ignoreUntrustedSSLError`**          | <code>boolean</code>                                            | ignoreUntrustedSSLError: if true, the webview will ignore untrusted SSL errors allowing the user to view the website.                                                             | <code>false</code>                                         | 6.1.0  |
-| **`allowJavascriptOpenWindows`**       | <code>boolean</code>                                            | if true, the browser will open new page when web page is using window.open, ios only                       
+| **`allowJavascriptOpenWindows`**       | <code>boolean</code>                                            | if true, the browser will open new page when web page is using window.open, ios only                                                                                              | <code>false</code>                                         | 1.4.2  |
+
 
 #### DisclaimerOptions
 
