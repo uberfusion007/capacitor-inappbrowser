@@ -785,7 +785,7 @@ extension WKWebViewController: WKUIDelegate {
     }
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        if navigationAction.targetFrame == nil {
+        if navigationAction.targetFrame == nil && allowJavascriptOpenWindows {
             webView.load(navigationAction.request)
         }
         return nil
