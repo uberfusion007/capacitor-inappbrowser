@@ -62,6 +62,12 @@ export interface OpenOptions {
    */
   isPresentAfterPageLoad?: boolean;
   preventDeeplink?: boolean;
+  /**
+   * if true, the browser will open new page when web page is using window.open, ios only
+   * @since 1.4.2
+   * @default false
+   */
+  allowJavascriptOpenWindows?: boolean;
 }
 
 export interface DisclaimerOptions {
@@ -212,6 +218,12 @@ export interface OpenWebViewOptions {
    * @default false
    */
   ignoreUntrustedSSLError?: boolean;
+  /**
+   * if true, the browser will open new page when web page is using window.open, ios only
+   * @since 1.4.2
+   * @default false
+   */
+  allowJavascriptOpenWindows?: boolean;
 }
 
 export interface InAppBrowserPlugin {

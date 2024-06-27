@@ -141,6 +141,9 @@ open class WKWebViewController: UIViewController {
     open var reloadBarButtonItemImage: UIImage?
     open var stopBarButtonItemImage: UIImage?
     open var activityBarButtonItemImage: UIImage?
+    
+    // Enable javaScriptCanOpenWindowsAutomatically
+    open var allowJavascriptOpenWindows = false
 
     fileprivate var webView: WKWebView?
     fileprivate var progressView: UIProgressView?
@@ -151,13 +154,11 @@ open class WKWebViewController: UIViewController {
     fileprivate var originalUserAgent: String?
 
     fileprivate lazy var backBarButtonItem: UIBarButtonItem = {
-        let bundle = Bundle(for: WKWebViewController.self)
-        return UIBarButtonItem(image: backBarButtonItemImage ?? UIImage(named: "Back", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(backDidClick(sender:)))
+        return UIBarButtonItem(image: backBarButtonItemImage ?? UIImage(named: "Back"), style: .plain, target: self, action: #selector(backDidClick(sender:)))
     }()
 
     fileprivate lazy var forwardBarButtonItem: UIBarButtonItem = {
-        let bundle = Bundle(for: WKWebViewController.self)
-        return UIBarButtonItem(image: forwardBarButtonItemImage ?? UIImage(named: "Forward", in: bundle, compatibleWith: nil), style: .plain, target: self, action: #selector(forwardDidClick(sender:)))
+        return UIBarButtonItem(image: forwardBarButtonItemImage ?? UIImage(named: "Forward"), style: .plain, target: self, action: #selector(forwardDidClick(sender:)))
     }()
 
     fileprivate lazy var reloadBarButtonItem: UIBarButtonItem = {
@@ -215,6 +216,12 @@ open class WKWebViewController: UIViewController {
         self.edgesForExtendedLayout = [.bottom]
 
         let webConfiguration = WKWebViewConfiguration()
+        
+        // Fixes for allowing iOS to use window.open()
+        let preferences = WKPreferences()
+        preferences.javaScriptCanOpenWindowsAutomatically = allowJavascriptOpenWindows
+        webConfiguration.preferences = preferences
+        
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 
         if webView.responds(to: Selector(("setInspectable:"))) {
@@ -775,6 +782,13 @@ extension WKWebViewController: WKUIDelegate {
         }))
 
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
     }
 }
 
